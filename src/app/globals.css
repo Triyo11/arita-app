@@ -1,0 +1,62 @@
+@import url(https://fonts.bunny.net/css?family=archivo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --animate-duration: 5000ms;
+  --animation-delay: 20s;
+}
+
+html {
+  background-color: #e8e5da;
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background:#1F343A;
+  -webkit-mask:radial-gradient(circle closest-side at 50% 40%,#0000 94%, #000);
+  transform-origin: 50% 40%;
+  animation: s5 0.5s infinite linear;
+}
+
+@keyframes s5 {
+  100% {transform: rotate(1turn)}
+}
+
+@media screen and (min-width: 768px) {
+  #mySwiper .swiper-button-next::after, #mySwiper .swiper-button-prev::after {
+    color: #072026;
+    font-weight: 600;
+    font-size: xxx-large;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #mySwiper .swiper-button-next::after, #mySwiper .swiper-button-prev::after {
+    color: #EDFC6C;
+    font-weight: 600;
+    font-size: medium;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #mySwiper .swiper-pagination-bullet, #mySwiper .swiper-pagination-bullet-active {
+    background : #EDFC6C;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #mySwiper .swiper-pagination-bullet, #mySwiper .swiper-pagination-bullet-active {
+    display: none;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "arita-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@phosphor-icons/react": "^2.0.14",
+    "animate.css": "^4.1.1",
+    "next": "14.0.1",
+    "react": "^18",
+    "react-awesome-reveal": "^4.2.8",
+    "react-dom": "^18",
+    "swiper": "^11.0.7",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0"
+  }
+}
