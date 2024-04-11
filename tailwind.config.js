@@ -30,6 +30,7 @@ module.exports = {
           primary: "#F8F9EE",
           "primary-content": "#5314FA",
           secondary: "#FFFFF8",
+          border: "#1F343A",
         },
       },
       {
@@ -38,6 +39,7 @@ module.exports = {
           primary: "#1F343A",
           "primary-content": "#EDFC6C",
           secondary: "#111C1F",
+          border: "#F8F9EE",
         },
       },
     ],
