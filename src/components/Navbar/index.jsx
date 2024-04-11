@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { List, Sun, Moon } from "@phosphor-icons/react/dist/ssr";
 import { getNewsResponse } from "@/services/api-services";
 import "animate.css";

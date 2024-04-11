@@ -1,5 +1,4 @@
 import Carousel from "@/components/Carousel";
-import NewsSourceList from "@/components/SourceMenu";
 import { getNewsResponse } from "@/services/api-services";
 import "animate.css";
 
