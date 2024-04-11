@@ -10,7 +10,7 @@ const Navbar = async ({ children }) => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* <!-- Navbar --> */}
-        <div className="w-full navbar flex justify-between pl-2 pr-4 bg-color-accent1">
+        <div className="w-full navbar flex justify-between pl-2 pr-4 bg-primary">
           <div className="flex-none">
             <label
               htmlFor="my-drawer-3"
@@ -20,18 +20,22 @@ const Navbar = async ({ children }) => {
               <List size={32} weight="bold" />
             </label>
           </div>
-          <p className="font-extrabold text-color-accent2 text-4xl">Arita</p>
+          <p className="font-extrabold text-primary-content text-4xl">Arita</p>
           <label className="swap swap-rotate">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              className="theme-controller"
+              value="forest"
+            />
             <Sun
               size={32}
               weight="fill"
-              className="swap-on fill-current w-7 h-7"
+              className="swap-off fill-current w-7 h-7"
             />
             <Moon
               size={32}
               weight="fill"
-              className="swap-off fill-current w-7 h-7"
+              className="swap-on fill-current w-7 h-7"
             />
           </label>
         </div>
@@ -43,13 +47,17 @@ const Navbar = async ({ children }) => {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu md:menu-lg menu-md p-4 md:w-80 w-52 min-h-full bg-color-accent1">
+        <ul className="menu md:menu-lg menu-md p-4 md:w-80 w-52 min-h-full bg-primary">
           <li>
-            <a href="/">Home</a>
+            <a href="/" className="font-bold text-primary-content">
+              Home
+            </a>
           </li>
           <li>
             <details open>
-              <summary>Channels</summary>
+              <summary className="font-bold text-primary-content">
+                Channels
+              </summary>
               <ul className="flex flex-col">
                 {resources?.endpoints.map((item) => (
                   <li key={item.name}>

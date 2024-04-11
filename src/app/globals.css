@@ -34,24 +34,8 @@ html {
 }
 
 @media screen and (min-width: 768px) {
-  #mySwiper .swiper-button-next::after, #mySwiper .swiper-button-prev::after {
-    color: #072026;
-    font-weight: 600;
-    font-size: xxx-large;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  #mySwiper .swiper-button-next::after, #mySwiper .swiper-button-prev::after {
-    color: #EDFC6C;
-    font-weight: 600;
-    font-size: medium;
-  }
-}
-
-@media screen and (min-width: 768px) {
   #mySwiper .swiper-pagination-bullet, #mySwiper .swiper-pagination-bullet-active {
-    background : #EDFC6C;
+    background : currentColor;
   }
 }
 

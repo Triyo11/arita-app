@@ -14,7 +14,7 @@ const Page = async () => {
   return (
     <div>
       <section>
-        <div className="bg-color-secondary min-h-[calc(100vh-56px)]">
+        <div className="bg-secondary min-h-[calc(100vh-56px)]">
           <Carousel latestNews={choosenNews} />
           {/* <h2 className="pl-4 py-8 font-semibold text-center md:text-3xl text-2xl text-color-primary animate__animated animate__fadeInDown">
             Channel Berita
