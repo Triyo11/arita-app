@@ -11,8 +11,8 @@
 }
 
 :root {
-  --animate-duration: 5000ms;
-  --animation-delay: 20s;
+  --animate-duration: 1000ms;
+  --animation-delay: 0.5s;
 }
 
 html {
