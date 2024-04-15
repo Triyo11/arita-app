@@ -1,6 +1,7 @@
-import { List, Sun, Moon } from "@phosphor-icons/react/dist/ssr";
 import { getNewsResponse } from "@/services/api-services";
-import "animate.css";
+import { List } from "@phosphor-icons/react/dist/ssr";
+import LocalModeSwapper from "../micro/LocalModeSwapper";
+import Link from "next/link";
 
 const Navbar = async ({ children }) => {
   const resources = await getNewsResponse("");
@@ -21,23 +22,8 @@ const Navbar = async ({ children }) => {
             </label>
           </div>
           <p className="font-extrabold text-primary-content text-4xl">Arita</p>
-          <label className="swap swap-rotate">
-            <input
-              type="checkbox"
-              className="theme-controller"
-              value="forest"
-            />
-            <Sun
-              size={32}
-              weight="fill"
-              className="swap-off fill-current w-7 h-7"
-            />
-            <Moon
-              size={32}
-              weight="fill"
-              className="swap-on fill-current w-7 h-7"
-            />
-          </label>
+          <List size={32} weight="bold" className="invisible" />
+          {/* <LocalModeSwapper /> */}
         </div>
         {children}
       </div>
@@ -65,6 +51,13 @@ const Navbar = async ({ children }) => {
                       {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                     </a>
                   </li>
+                  // <Link
+                  //   key={item.name}
+                  //   href={`/channel/${item.name}`}
+                  //   className="text-lg py-2 pl-2 hover:bg-gray-200 rounded-md"
+                  // >
+                  //   {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                  // </Link>
                 ))}
               </ul>
             </details>
