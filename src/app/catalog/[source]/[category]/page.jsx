@@ -10,10 +10,8 @@ import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 
 const Page = ({ params: { source, category } }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [newsData, setNewsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const pageSize = 12;
   const unconditionalContent = isLoading ? (
     <Loading />
   ) : (
@@ -34,9 +32,7 @@ const Page = ({ params: { source, category } }) => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
-
-  const paginatedNews = paginate(newsData, currentPage, pageSize);
+  }, []);
 
   return (
     <>
@@ -46,13 +42,7 @@ const Page = ({ params: { source, category } }) => {
             headerTitle={`${source} | ${category}`}
             source={source}
           />
-          <NewsCard news={paginatedNews} />
-          <Pagination
-            items={newsData.length}
-            currentPage={currentPage}
-            pageSize={pageSize}
-            setCurrentPage={setCurrentPage}
-          />
+          <NewsCard news={newsData} />
         </div>
       ) : (
         unconditionalContent

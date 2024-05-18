@@ -3,7 +3,6 @@ export const getNewsResponse = async (resource) => {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${resource}`
   );
   const rawData = await response.json();
-  console.log(rawData);
   return rawData;
 };
 
