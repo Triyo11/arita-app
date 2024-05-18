@@ -1,5 +1,6 @@
 import Carousel from "@/components/Carousel";
 import { getNewsResponse } from "@/services/api-services";
+import { HydrationProvider, Client } from "react-hydration-provider";
 import "animate.css";
 
 import "@/app/globals.css";
@@ -15,7 +16,11 @@ const Page = async () => {
     <div>
       <section>
         <div className="bg-secondary min-h-[calc(100vh-56px)]">
-          <Carousel latestNews={choosenNews} />
+          <HydrationProvider>
+            <Client>
+              <Carousel latestNews={choosenNews} />
+            </Client>
+          </HydrationProvider>
           {/* <h2 className="pl-4 py-8 font-semibold text-center md:text-3xl text-2xl text-color-primary animate__animated animate__fadeInDown">
             Channel Berita
           </h2>
