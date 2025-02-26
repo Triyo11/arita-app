@@ -2,9 +2,7 @@
 
 import NewsCard from "@/components/NewsCard";
 import HeaderNewsCard from "@/components/NewsCard/Header";
-import Pagination from "@/components/Pagination";
 import NotFound from "@/app/not-found";
-import { paginate } from "@/helpers/paginate";
 import { getNewsResponse } from "@/services/api-services";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
@@ -21,8 +19,7 @@ const Page = ({ params: { source, category } }) => {
   const fetchData = async () => {
     try {
       const news = await getNewsResponse(`${source}/${category}`);
-      const result = news.data ? news.data.posts.map((item) => item) : [];
-      setNewsData(result);
+      setNewsData(news.data.posts);
       setIsLoading(false);
     } catch (err) {
       console.log(err);
