@@ -6,15 +6,15 @@ const NewsCard = ({ news }) => {
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 items-center p-4 gap-8">
       {news.map((item) => {
-        let pubDate = new Date(item.pubDate);
+        let pubDate = new Date(item?.pubDate);
         pubDate = pubDate.toLocaleString("en-GB");
         return (
           <div
-            key={item.link}
+            key={item?.link}
             className="w-full h-full flex flex-col items-start justify-start animate__animated animate__zoomIn"
           >
             <Image
-              src={item.thumbnail}
+              src={item?.thumbnail}
               alt="gambar error"
               height={350}
               width={350}
@@ -23,10 +23,11 @@ const NewsCard = ({ news }) => {
             <div className="py-4">
               <p>{pubDate}</p>
               <Link
-                href={item.link}
+                target="_blank"
+                href={item?.link}
                 className="lg:text-lg md:text-base text-sm font-semibold hover:text-primary-content transition-all duration-300 ease-in-out"
               >
-                {item.title}
+                {item?.title}
               </Link>
             </div>
           </div>
