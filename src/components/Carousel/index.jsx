@@ -39,7 +39,6 @@ const Carousel = async ({ latestNews }) => {
   });
 
   const latestNewsData = Array.from(await Promise.all(getLatestNewsData));
-  console.log(latestNewsData);
 
   return (
     <div className="relative">
