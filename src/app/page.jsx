@@ -8,6 +8,7 @@ import { getNewsResponse } from "@/services/api-services";
 import { getAllNewsLink } from "@/services/api-services";
 import { HydrationProvider, Client } from "react-hydration-provider";
 import "animate.css";
+import { supabase } from "@/lib/supabase";
 
 import "@/app/globals.css";
 import Loading from "./loading";
@@ -19,6 +20,7 @@ const Page = () => {
   const [displayedNews, setDisplayedNews] = useState([]);
 
   const observer = useRef();
+  const isFetched = useRef(false);
   const arrChoosenNews = ["antara", "cnn", "cnbc", "tempo", "jpnn"];
 
   const fetchNewsData = async () => {
@@ -40,14 +42,45 @@ const Page = () => {
       })
     );
     const flattenedData = allNewsData.flat();
-    setAllNewsData(flattenedData);
-    setDisplayedNews(flattenedData.slice(0, 20)); // Gunakan slice
+    // filter if in flattenedData there are duplicate title
+    const uniqueData = flattenedData.filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((t) => t?.title === item?.title && t?.link === item?.link)
+    );
+    setAllNewsData(uniqueData);
+    setDisplayedNews(uniqueData.slice(0, 20)); // Gunakan slice
     setIsLoading(false);
+    uploadSupabase(uniqueData);
+  };
+
+  const uploadSupabase = async (dataNewsUpload) => {
+    const { data, error } = await supabase.from("arita-news-data").insert(
+      dataNewsUpload.map((item) => {
+        return {
+          title: item?.title,
+          thumbnail: item?.thumbnail,
+          pub_date: item?.pubDate,
+          link: item?.link,
+          description: item?.description,
+        };
+      })
+    );
+    if (error) {
+      console.error("Error inserting data to supabase:", error);
+    } else {
+      console.log("Success inserting data to supabase:", data);
+    }
   };
 
   useEffect(() => {
-    fetchNewsData();
-    fetchAllNewsData();
+    // to make sure
+    // fetching runned once
+    if (!isFetched.current) {
+      fetchNewsData();
+      fetchAllNewsData();
+      isFetched.current = true;
+    }
   }, []);
 
   const lastElementRef = useCallback(
@@ -75,8 +108,6 @@ const Page = () => {
     },
     [isLoading, allNewsData, displayedNews.length]
   );
-
-  console.log(displayedNews);
 
   return (
     <div>
