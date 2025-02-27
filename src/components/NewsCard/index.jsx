@@ -1,13 +1,12 @@
 import Image from "next/image";
 import "animate.css";
 import Link from "next/link";
+import { formatDate } from "@/utils/formatDate";
 
 const NewsCard = ({ news }) => {
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 items-center p-4 gap-8">
       {news.map((item) => {
-        let pubDate = new Date(item?.pubDate);
-        pubDate = pubDate.toLocaleString("en-GB");
         return (
           <div
             key={item?.link}
@@ -21,7 +20,7 @@ const NewsCard = ({ news }) => {
               className="rounded-md w-full max-h-max"
             />
             <div className="py-4">
-              <p>{pubDate}</p>
+              <p>{formatDate(item?.pubDate)}</p>
               <Link
                 target="_blank"
                 href={item?.link}

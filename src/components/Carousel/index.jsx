@@ -1,97 +1,93 @@
 "use client";
 
 import React from "react";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 import "animate.css";
 
 import { getLatestNews } from "@/services/api-services";
+import { useState, useEffect } from "react";
+import { formatDate } from "@/utils/formatDate";
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+const Carousel = ({ latestNews }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [latestNewsData, setLatestNewsData] = useState([]);
 
-const SwiperButtonNext = ({ children }) => {
-  const swiper = useSwiper();
+  useEffect(() => {
+    const fetchLatestNewsData = async () => {
+      const getLinkLatestNews = latestNews.map((item) => item.paths[0].path);
+      const getLatestNewsData = getLinkLatestNews.map(async (item) => {
+        const data = await getLatestNews(item);
+        return data;
+      });
+
+      const newsData = await Promise.all(getLatestNewsData);
+      setLatestNewsData(newsData);
+    };
+
+    fetchLatestNewsData();
+  }, [latestNews]);
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? latestNewsData.length - 1 : prevIndex - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === latestNewsData.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [latestNewsData]);
+
   return (
-    <button className="text-primary-content" onClick={() => swiper.slideNext()}>
-      {children}
-    </button>
-  );
-};
-
-const SwiperButtonPrev = ({ children }) => {
-  const swiper = useSwiper();
-  return (
-    <button className="text-primary-content" onClick={() => swiper.slidePrev()}>
-      {children}
-    </button>
-  );
-};
-
-const Carousel = async ({ latestNews }) => {
-  const getLinkLatestNews = latestNews.map((item) => item.paths[0].path);
-  // console.log(getLinkLatestNews)
-  const getLatestNewsData = getLinkLatestNews.map(async (item) => {
-    const data = await getLatestNews(item);
-    return data;
-  });
-
-  const latestNewsData = Array.from(await Promise.all(getLatestNewsData));
-
-  return (
-    <div className="relative">
-      <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Autoplay, Pagination]}
-        id="mySwiper"
+    <div className="relative flex justify-between w-full h-96 overflow-hidden">
+      <button
+        onClick={prevSlide}
+        className="absolute z-10 left-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max text-primary-content hidden lg:block"
       >
-        <div className="absolute top-1/2 md:left-10 left-2 z-20">
-          <SwiperButtonPrev>
-            <CaretLeft size={42} weight="bold" />
-          </SwiperButtonPrev>
-        </div>
-        <div className="absolute top-1/2 md:right-10 right-2 z-20">
-          <SwiperButtonNext>
-            <CaretRight size={42} weight="bold" />
-          </SwiperButtonNext>
-        </div>
-        {latestNewsData &&
-          latestNewsData.map((news) =>
-            news?.thumbnail.length > 0 ? (
-              <SwiperSlide key={JSON.stringify(news?.title)}>
-                <div className="text-justify flex justify-center animate__animated animate__zoomIn">
-                  <img
-                    onError={(e) =>
-                      (e.currentTarget.src =
-                        "https://via.placeholder.com/350x150")
-                    }
-                    src={news?.thumbnail}
-                    alt={news?.title}
-                    className="md:w-[90%] w-full md:h-96 h-60 md:object-contain object-cover"
-                  />
-                  <div className="bg-primary bg-opacity-80 absolute bottom-0 w-full md:text-center md:h-[20%] h-[30%]">
-                    <a
-                      className="absolute z-20 bg-transparent w-full bottom-0 mb-0 md:pb-8 pb-4 px-4 pt-4 md:text-xl text-md md:font-bold font-normal text-color-primary line-clamp-2"
-                      href={news?.link}
-                    >
-                      {news?.title}
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ) : null
-          )}
-      </Swiper>
+        <CaretLeft weight="bold" size={42} />
+      </button>
+      <div
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {latestNewsData.map((news) => (
+          <div
+            key={news?.id}
+            className="relative w-full flex justify-center flex-shrink-0"
+          >
+            <img
+              src={news?.thumbnail}
+              alt={news?.title}
+              className="w-full lg:w-1/2 h-96 object-cover"
+            />
+            <div className="absolute bottom-0 p-4 bg-white bg-opacity-90 w-full text-center">
+              <a
+                target="_blank"
+                href={news?.link}
+                className="flex flex-col justify-center items-center text-sm hover:text-primary-content transition-all duration-300 ease-in-out w-full"
+              >
+                <span className="font-bold">{news?.title}</span>
+                <span className="font-normal">{formatDate(news?.pubDate)}</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={nextSlide}
+        className="absolute z-10 right-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max bg-transparent hover:bg-gray-200 rounded-full text-primary-content hidden lg:block"
+      >
+        <CaretRight weight="bold" size={42} />
+      </button>
     </div>
   );
 };

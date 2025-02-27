@@ -6,7 +6,6 @@ import Carousel from "@/components/Carousel";
 import NewsCard from "@/components/NewsCard";
 import { getNewsResponse } from "@/services/api-services";
 import { getAllNewsLink } from "@/services/api-services";
-import { HydrationProvider, Client } from "react-hydration-provider";
 import "animate.css";
 import { supabase } from "@/lib/supabase";
 
@@ -112,13 +111,7 @@ const Page = () => {
   return (
     <div>
       <section>
-        {/* <div className="bg-secondary">
-          <HydrationProvider>
-            <Client>
-              <Carousel latestNews={choosenNews} />
-            </Client>
-          </HydrationProvider>
-        </div> */}
+        <Carousel latestNews={choosenNews} />
         <NewsCard news={displayedNews} />
         <div ref={lastElementRef} className="p-4 text-center">
           {isLoading && <Loading />}
