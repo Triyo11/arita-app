@@ -73,7 +73,7 @@ const Carousel = ({ latestNews }) => {
               <a
                 target="_blank"
                 href={news?.link}
-                className="flex flex-col justify-center items-center text-sm hover:text-primary-content transition-all duration-300 ease-in-out w-full"
+                className="flex flex-col justify-center items-center text-sm md:text-lg hover:text-primary-content transition-all duration-300 ease-in-out max-w-max mx-auto"
               >
                 <span className="font-bold">{news?.title}</span>
                 <span className="font-normal">{formatDate(news?.pubDate)}</span>
