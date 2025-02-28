@@ -51,7 +51,7 @@ const Carousel = ({ latestNews }) => {
     <div className="relative flex justify-between w-full h-96 overflow-hidden">
       <button
         onClick={prevSlide}
-        className="absolute z-10 left-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max text-primary-content hidden lg:block"
+        className="absolute z-10 left-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max bg-transparent hover:bg-primary-content hover:text-primary rounded-full text-primary-content transition-all duration-300 ease-in-out hidden lg:block"
       >
         <CaretLeft weight="bold" size={42} />
       </button>
@@ -69,7 +69,7 @@ const Carousel = ({ latestNews }) => {
               alt={news?.title}
               className="w-full lg:w-1/2 h-96 object-cover"
             />
-            <div className="absolute bottom-0 p-4 bg-white bg-opacity-90 w-full text-center">
+            <div className="absolute bottom-0 p-4 bg-secondary/90 bg-opacity-90 w-full text-center">
               <a
                 target="_blank"
                 href={news?.link}
@@ -84,7 +84,7 @@ const Carousel = ({ latestNews }) => {
       </div>
       <button
         onClick={nextSlide}
-        className="absolute z-10 right-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max bg-transparent hover:bg-gray-200 rounded-full text-primary-content hidden lg:block"
+        className="absolute z-10 right-10 top-1/2 transform -translate-y-1/2 p-2 max-h-max bg-transparent hover:bg-primary-content hover:text-primary rounded-full text-primary-content transition-all duration-300 ease-in-out hidden lg:block"
       >
         <CaretRight weight="bold" size={42} />
       </button>

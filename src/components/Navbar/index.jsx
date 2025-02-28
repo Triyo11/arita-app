@@ -22,8 +22,7 @@ const Navbar = async ({ children }) => {
             </label>
           </div>
           <p className="font-extrabold text-primary-content text-4xl">Arita</p>
-          <List size={32} weight="bold" className="invisible" />
-          {/* <LocalModeSwapper /> */}
+          <LocalModeSwapper />
         </div>
         {children}
       </div>
