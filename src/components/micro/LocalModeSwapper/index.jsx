@@ -20,7 +20,7 @@ const LocalModeSwapper = () => {
   }, [theme]);
 
   return (
-    <div>
+    <div className="flex items-center">
       <label className="swap swap-rotate">
         <input
           type="checkbox"

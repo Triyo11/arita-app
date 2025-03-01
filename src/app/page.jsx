@@ -6,8 +6,8 @@ import Carousel from "@/components/Carousel";
 import NewsCard from "@/components/NewsCard";
 import { getNewsResponse } from "@/services/api-services";
 import { getAllNewsLink } from "@/services/api-services";
-import { HydrationProvider, Client } from "react-hydration-provider";
 import "animate.css";
+import { supabase } from "@/lib/supabase";
 
 import "@/app/globals.css";
 import Loading from "./loading";
@@ -19,7 +19,8 @@ const Page = () => {
   const [displayedNews, setDisplayedNews] = useState([]);
 
   const observer = useRef();
-  const arrChoosenNews = ["antara", "cnn", "cnbc", "tempo", "jpnn"];
+  const isFetched = useRef(false);
+  const arrChoosenNews = ["cnn", "cnbc", "kumparan"];
 
   const fetchNewsData = async () => {
     const resources = await getNewsResponse("");
@@ -40,14 +41,86 @@ const Page = () => {
       })
     );
     const flattenedData = allNewsData.flat();
-    setAllNewsData(flattenedData);
-    setDisplayedNews(flattenedData.slice(0, 20)); // Gunakan slice
+    // filter if in flattenedData there are duplicate title
+    const uniqueData = flattenedData.filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex(
+          (t) => t?.title === item?.title && t?.link === item?.link
+        )
+    );
+    setAllNewsData(uniqueData);
+    setDisplayedNews(uniqueData.slice(0, 20)); // Gunakan slice
     setIsLoading(false);
+    uploadSupabase(uniqueData);
+  };
+
+  const uploadSupabase = async (dataNewsUpload) => {
+    let allTitles = [];
+    let from = 0;
+    const limit = 1000;
+
+    // Ambil semua title dengan pagination
+    while (true) {
+      const { data, error } = await supabase
+        .from("arita-news-data")
+        .select("title")
+        .range(from, from + limit - 1);
+
+      if (error) {
+        console.error("Error fetching existing data from Supabase:", error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        break; // Stop jika tidak ada data lagi
+      }
+
+      allTitles = allTitles.concat(
+        data.map((item) => item.title?.toLowerCase())
+      );
+      from += limit;
+    }
+
+    console.log("Total existing titles:", allTitles.length);
+
+    // Filter data yang belum ada di database
+    const filteredData = dataNewsUpload.filter(
+      (item) => !allTitles.includes(item?.title?.toLowerCase())
+    );
+
+    console.log("Filtered data:", filteredData);
+
+    if (filteredData.length > 0) {
+      const { data, error } = await supabase.from("arita-news-data").insert(
+        filteredData.map((item) => ({
+          title: item?.title,
+          thumbnail: item?.thumbnail,
+          pub_date: item?.pubDate,
+          link: item?.link,
+          description: item?.description,
+        })),
+        { onConflict: ["title"] }
+      );
+
+      if (error) {
+        console.error("Error inserting data to Supabase:", error);
+      } else {
+        console.log("Success inserting data to Supabase:", data);
+      }
+    } else {
+      console.log("No new data to insert.");
+    }
   };
 
   useEffect(() => {
-    fetchNewsData();
-    fetchAllNewsData();
+    // to make sure
+    // fetching runned once
+    if (!isFetched.current) {
+      fetchNewsData();
+      fetchAllNewsData();
+      isFetched.current = true;
+    }
   }, []);
 
   const lastElementRef = useCallback(
@@ -76,18 +149,10 @@ const Page = () => {
     [isLoading, allNewsData, displayedNews.length]
   );
 
-  console.log(displayedNews);
-
   return (
     <div>
       <section>
-        {/* <div className="bg-secondary">
-          <HydrationProvider>
-            <Client>
-              <Carousel latestNews={choosenNews} />
-            </Client>
-          </HydrationProvider>
-        </div> */}
+        <Carousel latestNews={choosenNews} />
         <NewsCard news={displayedNews} />
         <div ref={lastElementRef} className="p-4 text-center">
           {isLoading && <Loading />}

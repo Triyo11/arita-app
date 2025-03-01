@@ -17,7 +17,9 @@ export const getAllNewsLink = async () => {
         item.name !== "suara" &&
         item.name !== "tribun" &&
         item.name !== "sindonews" &&
-        item.name !== "okezone"
+        item.name !== "okezone" &&
+        item.name !== "merdeka" &&
+        item.name !== "antara"
     )
     .map((item) => item.paths)
     .flatMap((item) => item)
@@ -43,5 +45,6 @@ export const getAllNewsData = async () => {
 export const getLatestNews = async (link) => {
   const response = await fetch(link);
   const jsonData = await response.json();
-  return jsonData.data?.posts[0];
+  const choosenLatestNews = jsonData.data?.posts.slice(0, 3);
+  return choosenLatestNews;
 };
