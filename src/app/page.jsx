@@ -45,7 +45,9 @@ const Page = () => {
     const uniqueData = flattenedData.filter(
       (item, index, self) =>
         index ===
-        self.findIndex((t) => t?.title === item?.title && t?.link === item?.link)
+        self.findIndex(
+          (t) => t?.title === item?.title && t?.link === item?.link
+        )
     );
     setAllNewsData(uniqueData);
     setDisplayedNews(uniqueData.slice(0, 20)); // Gunakan slice
@@ -54,21 +56,60 @@ const Page = () => {
   };
 
   const uploadSupabase = async (dataNewsUpload) => {
-    const { data, error } = await supabase.from("arita-news-data").insert(
-      dataNewsUpload.map((item) => {
-        return {
+    let allTitles = [];
+    let from = 0;
+    const limit = 1000;
+
+    // Ambil semua title dengan pagination
+    while (true) {
+      const { data, error } = await supabase
+        .from("arita-news-data")
+        .select("title")
+        .range(from, from + limit - 1);
+
+      if (error) {
+        console.error("Error fetching existing data from Supabase:", error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        break; // Stop jika tidak ada data lagi
+      }
+
+      allTitles = allTitles.concat(
+        data.map((item) => item.title?.toLowerCase())
+      );
+      from += limit;
+    }
+
+    console.log("Total existing titles:", allTitles.length);
+
+    // Filter data yang belum ada di database
+    const filteredData = dataNewsUpload.filter(
+      (item) => !allTitles.includes(item?.title?.toLowerCase())
+    );
+
+    console.log("Filtered data:", filteredData);
+
+    if (filteredData.length > 0) {
+      const { data, error } = await supabase.from("arita-news-data").insert(
+        filteredData.map((item) => ({
           title: item?.title,
           thumbnail: item?.thumbnail,
           pub_date: item?.pubDate,
           link: item?.link,
           description: item?.description,
-        };
-      })
-    );
-    if (error) {
-      console.error("Error inserting data to supabase:", error);
+        })),
+        { onConflict: ["title"] }
+      );
+
+      if (error) {
+        console.error("Error inserting data to Supabase:", error);
+      } else {
+        console.log("Success inserting data to Supabase:", data);
+      }
     } else {
-      console.log("Success inserting data to supabase:", data);
+      console.log("No new data to insert.");
     }
   };
 
