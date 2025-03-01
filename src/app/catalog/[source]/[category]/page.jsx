@@ -1,7 +1,7 @@
 "use client";
 
 import NewsCard from "@/components/NewsCard";
-import HeaderNewsCard from "@/components/NewsCard/Header";
+import ContentHeader from "@/components/ContentHeader";
 import NotFound from "@/app/not-found";
 import { getNewsResponse } from "@/services/api-services";
 import { useEffect, useState } from "react";
@@ -35,9 +35,8 @@ const Page = ({ params: { source, category } }) => {
     <>
       {newsData.length > 0 ? (
         <div className="bg-color-primary">
-          <HeaderNewsCard
-            headerTitle={`${source} | ${category}`}
-            source={source}
+          <ContentHeader
+            title={`${source} | ${category}`}
           />
           <NewsCard news={newsData} />
         </div>

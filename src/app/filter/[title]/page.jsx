@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Loading from "@/app/loading";
 import NewsCard from "@/components/NewsCard";
+import ContentHeader from "@/components/ContentHeader";
 
 const Page = ({ params: { title } }) => {
   const [filteredNews, setFilteredNews] = useState([]);
@@ -43,9 +44,7 @@ const Page = ({ params: { title } }) => {
       ) : (
         unconditionalContent
       )} */}
-      <h2>
-        Filter result for: <span>{title}</span>
-      </h2>
+      <ContentHeader title={`Filter result for: ${title}`} />
       {filteredNews.length > 0 ? (
         <NewsCard news={filteredNews} />
       ) : (
