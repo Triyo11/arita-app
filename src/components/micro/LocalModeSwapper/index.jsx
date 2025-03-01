@@ -4,7 +4,7 @@ import { Sun, Moon } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useState } from "react";
 
 const LocalModeSwapper = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState("light");
   const handleThemeToggle = (e) => {
     if (e.target.checked) {
       setTheme("forest");
