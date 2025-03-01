@@ -1,6 +1,6 @@
 "use client";
 
-import { Faders } from "@phosphor-icons/react/dist/ssr";
+import { Faders, XCircle } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useState } from "react";
 
 const Filter = () => {
@@ -15,7 +15,18 @@ const Filter = () => {
 
   const handleGoToFilterPage = () => {
     window.location.href = `/filter/${titleFilter}`;
-  }
+  };
+
+  const handleCloseFilterModal = () => {
+    const modal = document.getElementById("filter_modal");
+    modal.closeModal();
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleGoToFilterPage();
+    }
+  };
 
   return (
     <div className="flex items-center text-md lg:text-lg">
@@ -24,11 +35,12 @@ const Filter = () => {
       </button>
 
       <dialog id="filter_modal" className="modal modal-bottom sm:modal-middle">
-        <form
-          onSubmit={handleGoToFilterPage}
-          method="dialog"
-          className="w-full sm:w-1/2 bg-primary rounded-badge max-h-max flex flex-col gap-4 md:p-8 p-4"
-        >
+        <div className="modal-box w-full sm:w-1/2 bg-primary rounded-badge max-h-max flex flex-col gap-4 md:p-8 p-4">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              <XCircle size={32} weight="bold" />
+            </button>
+          </form>
           <h2 className="text-center font-bold">Filter by</h2>
           <label className="input input-bordered flex items-center gap-2">
             Title
@@ -38,40 +50,19 @@ const Filter = () => {
               placeholder="title"
               onChange={(e) => setTitleFilter(e.target.value)}
               value={titleFilter}
+              onKeyDown={handleKeyPress}
             />
           </label>
-          {/* <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <label className="input input-bordered flex items-center gap-2">
-              Start Date
-              <input
-                type="date"
-                className="grow"
-                onChange={(e) => setStartDateFilter(e.target.value)}
-                value={startDateFilter}
-              />
-            </label>
-            <label className="input input-bordered flex items-center gap-2">
-              End Date
-              <input
-                type="date"
-                className="grow"
-                onChange={(e) => setEndDateFilter(e.target.value)}
-                value={endDateFilter}
-              />
-            </label>
-          </div> */}
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end">
             <button
-              type="submit"
-              className="bg-primary-content text-primary py-2 px-4 rounded-badge"
+              onClick={handleGoToFilterPage}
+              className="bg-primary-content text-primary py-2 px-4 rounded-badge disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={titleFilter === ""}
             >
               Filter
             </button>
-            <button className="bg-transparent text-primary-content py-2 px-4 rounded-badge">
-              Close
-            </button>
           </div>
-        </form>
+        </div>
       </dialog>
     </div>
   );
