@@ -1,6 +1,7 @@
 import { getNewsResponse } from "@/services/api-services";
 import { List } from "@phosphor-icons/react/dist/ssr";
 import LocalModeSwapper from "../micro/LocalModeSwapper";
+import Filter from "../micro/Filter";
 import Link from "next/link";
 
 const Navbar = async ({ children }) => {
@@ -11,7 +12,7 @@ const Navbar = async ({ children }) => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* <!-- Navbar --> */}
-        <div className="w-full navbar flex justify-between pl-2 pr-4 bg-primary">
+        <div className="w-full navbar flex justify-between items-center pl-2 pr-4 bg-primary">
           <div className="flex-none">
             <label
               htmlFor="my-drawer-3"
@@ -21,8 +22,13 @@ const Navbar = async ({ children }) => {
               <List size={32} weight="bold" />
             </label>
           </div>
-          <p className="font-extrabold text-primary-content text-4xl">Arita</p>
-          <LocalModeSwapper />
+          <p className="font-extrabold text-primary-content text-4xl absolute left-1/2 transform -translate-x-1/2">
+            Arita
+          </p>
+          <div className="flex gap-2">
+            <Filter />
+            <LocalModeSwapper />
+          </div>
         </div>
         {children}
       </div>

@@ -20,7 +20,7 @@ const NewsCard = ({ news }) => {
               className="rounded-md w-full max-h-max"
             />
             <div className="py-4">
-              <p>{formatDate(item?.pubDate)}</p>
+              <p>{formatDate(item?.pubDate || item?.pub_date)}</p>
               <Link
                 target="_blank"
                 href={item?.link}

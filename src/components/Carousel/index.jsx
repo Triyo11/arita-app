@@ -21,7 +21,7 @@ const Carousel = ({ latestNews }) => {
       });
 
       const newsData = await Promise.all(getLatestNewsData);
-      setLatestNewsData(newsData);
+      setLatestNewsData(newsData.flat());
     };
 
     fetchLatestNewsData();

@@ -20,7 +20,7 @@ const Page = () => {
 
   const observer = useRef();
   const isFetched = useRef(false);
-  const arrChoosenNews = ["antara", "cnn", "cnbc", "tempo", "jpnn"];
+  const arrChoosenNews = ["cnn", "cnbc", "kumparan"];
 
   const fetchNewsData = async () => {
     const resources = await getNewsResponse("");
