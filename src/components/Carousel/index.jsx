@@ -61,7 +61,7 @@ const Carousel = ({ latestNews }) => {
       >
         {latestNewsData.map((news) => (
           <div
-            key={news?.id}
+            key={news?.title}
             className="relative w-full flex justify-center flex-shrink-0"
           >
             <img
