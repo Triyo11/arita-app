@@ -17,13 +17,8 @@ const Filter = () => {
     window.location.href = `/filter/${titleFilter}`;
   };
 
-  const handleCloseFilterModal = () => {
-    const modal = document.getElementById("filter_modal");
-    modal.closeModal();
-  };
-
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && titleFilter !== "") {
       handleGoToFilterPage();
     }
   };
